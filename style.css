@@ -1,0 +1,103 @@
+/* Transição suave global */
+* {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+/* --- MODO ESCURO (Padrão) --- */
+html.dark body {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+html.dark .header-bg {
+  background-color: rgba(15, 23, 42, 0.85);
+  border-color: #1e293b;
+}
+
+html.dark .card-bg, 
+html.dark .modal-card {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+html.dark .theme-btn {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #f8fafc;
+}
+
+html.dark .theme-btn:hover {
+  background-color: #334155;
+}
+
+html.dark .input-bg {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #f8fafc;
+}
+
+html.dark .subtext {
+  color: #94a3b8;
+}
+
+html.dark .filter-btn {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+html.dark .active-filter {
+  background-color: #16a34a;
+  color: #ffffff;
+  border-color: #16a34a;
+}
+
+/* --- MODO CLARO --- */
+html.light body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+html.light .header-bg {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-color: #e2e8f0;
+}
+
+html.light .card-bg, 
+html.light .modal-card {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+html.light .theme-btn {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+html.light .theme-btn:hover {
+  background-color: #f1f5f9;
+}
+
+html.light .input-bg {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+html.light .subtext {
+  color: #64748b;
+}
+
+html.light .filter-btn {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  color: #64748b;
+}
+
+html.light .active-filter {
+  background-color: #16a34a;
+  color: #ffffff;
+  border-color: #16a34a;
+}
