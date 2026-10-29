@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plataforma de Aulas</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- FontAwesome Ícones -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  
+  <!-- CSS Customizado -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen transition-colors duration-300">
+
+  <!-- Header -->
+  <header class="border-b border-gray-800 header-bg sticky top-0 z-40 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="bg-brand-600 text-white p-2.5 rounded-xl shadow-md">
+          <i class="fa-solid fa-graduation-cap text-xl"></i>
+        </div>
+        <span class="font-bold text-xl tracking-tight">DevCourse</span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <!-- Botão Alternar Tema -->
+        <button id="themeToggle" class="px-4 py-2 rounded-xl border border-gray-700 theme-btn transition-all flex items-center gap-2 text-sm font-medium">
+          <i id="themeIcon" class="fa-solid fa-moon text-yellow-400"></i>
+          <span id="themeText">Modo Escuro</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Cabeçalho -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div>
+        <h1 class="text-3xl font-extrabold tracking-tight mb-2">Módulos do Curso</h1>
+        <p class="subtext">Acompanhe seu progresso e assista às suas aulas.</p>
+      </div>
+      
+      <!-- Progresso Geral -->
+      <div class="w-full md:w-64 card-bg p-4 rounded-2xl border">
+        <div class="flex justify-between text-xs font-semibold mb-2">
+          <span>Progresso Geral</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="w-full bg-gray-700/40 rounded-full h-2.5 overflow-hidden">
+          <div id="progressBar" class="bg-brand-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards de Estatísticas -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div class="card-bg p-4 rounded-2xl border">
+        <span class="text-sm subtext">Total de Aulas</span>
+        <p id="totalLessons" class="text-2xl font-bold mt-1">9 Aulas</p>
+      </div>
+      <div class="card-bg p-4 rounded-2xl border">
+        <span class="text-sm subtext">Tempo Total</span>
+        <p id="totalDuration" class="text-2xl font-bold mt-1">104 min</p>
+      </div>
+      <div class="card-bg p-4 rounded-2xl border">
+        <span class="text-sm subtext">Concluídas</span>
+        <p id="completedLessons" class="text-2xl font-bold mt-1 text-brand-500">0 / 9</p>
+      </div>
+    </div>
+
+    <!-- Barra de Filtro e Pesquisa -->
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+      <!-- Busca -->
+      <div class="relative w-full sm:w-80">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+        <input type="text" id="searchInput" placeholder="Pesquisar aula..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border input-bg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+      </div>
+
+      <!-- Filtros -->
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+        <button data-filter="all" class="filter-btn active-filter px-4 py-2 text-sm rounded-xl border font-medium">Todas</button>
+        <button data-filter="pending" class="filter-btn px-4 py-2 text-sm rounded-xl border font-medium">Pendentes</button>
+        <button data-filter="completed" class="filter-btn px-4 py-2 text-sm rounded-xl border font-medium">Concluídas</button>
+      </div>
+    </div>
+
+    <!-- Lista de Aulas -->
+    <div id="lessonsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </main>
+
+  <!-- Modal do Player de Vídeo -->
+  <div id="videoModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="modal-card border w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+      
+      <!-- Cabeçalho Modal -->
+      <div class="p-4 border-b flex items-center justify-between">
+        <h3 id="modalTitle" class="font-bold text-lg">Título da Aula</h3>
+        <button id="closeModalBtn" class="subtext hover:text-red-500 p-2 rounded-lg transition">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+
+      <!-- Video Player Simulado -->
+      <div class="aspect-video bg-black relative flex items-center justify-center group">
+        <i class="fa-solid fa-circle-play text-6xl text-brand-500 cursor-pointer hover:scale-110 transition-transform"></i>
+      </div>
+
+      <!-- Rodapé Modal -->
+      <div class="p-4 flex flex-wrap items-center justify-between gap-4 border-t">
+        <div id="modalInfo" class="text-sm subtext"></div>
+        <button id="toggleCompleteModalBtn" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-medium rounded-xl transition flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-check"></i>
+          <span id="modalBtnText">Marcar como Concluída</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
